@@ -5,7 +5,7 @@ const bodyParser = require('./helpers/bodyParser')
 const routes = require('./routes')
 
 const server = http.createServer((request, response) => {
-    const parsedUrl = url.parse(request.url, true)
+    const parsedUrl = url.parse(request.url, true) //turn query param into object
     console.log(`Request method: ${request.method} | Endpoint: ${parsedUrl.pathname}`)
 
     let { pathname } = parsedUrl
@@ -18,6 +18,7 @@ const server = http.createServer((request, response) => {
         id = splitEndpoint[1]
     }
 
+    //finds a existing route
     const route = routes.find((routeObj) => (
         routeObj.endpoint === pathname && routeObj.method === request.method
     ))
@@ -31,7 +32,7 @@ const server = http.createServer((request, response) => {
             response.end(JSON.stringify(body))
         }
 
-        if(['POST', 'PUT'].includes(request.method)) {
+        if(['POST', 'PUT', 'PATCH'].includes(request.method)) {
             bodyParser(request, () => route.handler(request, response))
         } else {
             route.handler(request, response)
