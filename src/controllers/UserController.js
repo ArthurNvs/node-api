@@ -37,6 +37,10 @@ module.exports = {
             name: body.name,
         }
 
+        if(users.find((user) => user.id === newUser.id)) {
+            return response.send(400, { error: 'User id already exists'})
+        }
+
         users.push(newUser)
 
         response.send(200, newUser)

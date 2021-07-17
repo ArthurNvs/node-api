@@ -5,7 +5,7 @@ const bodyParser = require('./helpers/bodyParser')
 const routes = require('./routes')
 
 const server = http.createServer((request, response) => {
-    const parsedUrl = url.parse(request.url, true) //turn query param into object
+    const parsedUrl = new URL(`http://localhost:3000${request.url}`)
     console.log(`Request method: ${request.method} | Endpoint: ${parsedUrl.pathname}`)
 
     let { pathname } = parsedUrl
@@ -24,7 +24,7 @@ const server = http.createServer((request, response) => {
     ))
 
     if (route) {
-        request.query = parsedUrl.query
+        request.query = Object.fromEntries(parsedUrl.searchParams)
         request.params = { id }
 
         response.send = (statusCode, body) => {
