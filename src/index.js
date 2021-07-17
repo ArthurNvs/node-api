@@ -18,7 +18,7 @@ const server = http.createServer((request, response) => {
         id = splitEndpoint[1]
     }
 
-    //finds a existing route
+    //finds an existing route
     const route = routes.find((routeObj) => (
         routeObj.endpoint === pathname && routeObj.method === request.method
     ))

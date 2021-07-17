@@ -1,4 +1,3 @@
-const { createSecureServer } = require('http2')
 let users = require('../mocks/users')
 
 module.exports = {
@@ -21,9 +20,8 @@ module.exports = {
 
         const user = users.find((user) => user.id === Number(id))
 
-        if (!user) {
+        if (!user)
             return response.send(400, { error: 'User not found'})
-        } 
         
         response.send(200, user)
     },
@@ -37,9 +35,8 @@ module.exports = {
             name: body.name,
         }
 
-        if(users.find((user) => user.id === newUser.id)) {
+        if(users.find((user) => user.id === newUser.id))
             return response.send(400, { error: 'User id already exists'})
-        }
 
         users.push(newUser)
 
@@ -75,6 +72,9 @@ module.exports = {
     deleteUser(request, response) {
         let { id } = request.params
         id = Number(id)
+
+        if(!users.find((user) => user.id === id))
+            return response.send(400, { error: 'User id not found'})
 
         users = users.filter((user) => user.id !== id)
         response.send(200, { deleted: true })
